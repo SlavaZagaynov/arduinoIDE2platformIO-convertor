@@ -1,3 +1,5 @@
+# + utf-8 для русских букав :) Slava Zagaynov 2025/04/22
+
 #------------------------------------------------------------
 #
 #   convert a ArduinoIDE project to a PlatformIO project
@@ -205,7 +207,7 @@ def create_arduinoglue_file():
     try:
         all_defines_path = os.path.join(glob_pio_include, 'arduinoGlue.h')
         logging.info(f"\tCreating arduinoGlue.h")
-        with open(all_defines_path, 'w') as f:
+        with open(all_defines_path, 'w' , encoding='utf-8') as f:
             f.write("#ifndef ARDUINOGLUE_H\n#define ARDUINOGLUE_H\n\n")
             f.write(f"\n{all_includes_marker}")
             f.write(f"\n{all_defines_marker}")
@@ -536,7 +538,7 @@ def remove_pio_tree(preserve_file):
     # Check if the preserve_file exists and read its contents
     preserve_file_contents = None
     if os.path.exists(preserve_file_path):
-        with open(preserve_file_path, 'r') as f:
+        with open(preserve_file_path, 'r' , encoding='utf-8') as f:
             preserve_file_contents = f.read()
     
     try:
@@ -572,7 +574,7 @@ def remove_pio_tree(preserve_file):
                 #shutil.rmtree(item_path)
         
         # Restore or create the preserve_file with its original contents
-        with open(preserve_file_path, 'w') as f:
+        with open(preserve_file_path, 'w' , encoding='utf-8') as f:
             if preserve_file_contents is not None:
                 f.write(preserve_file_contents)
         
@@ -678,7 +680,7 @@ def insert_method_include_in_header(header_file, include_statement):
     logging.info("")
     logging.info("Processing: insert_method_include_in_header() ..")
     try:
-        with open(header_file, 'r') as file:
+        with open(header_file, 'r', encoding='utf-8') as file:
             content = file.readlines()
 
         # Find the appropriate position to insert the include statement
@@ -723,7 +725,7 @@ def insert_method_include_in_header(header_file, include_statement):
         else:
             logging.debug(f"\tInclude statement already exists in {short_path(header_file)}: {include_statement}")
         
-        with open(header_file, 'w') as file:
+        with open(header_file, 'w', encoding='utf-8') as file:
             file.writelines(content)
     
     except Exception as e:
@@ -872,7 +874,7 @@ default_envs = myBoard
 #lib_deps =
 ;\t<select libraries with "PIO Home" -> Libraries
 """
-        with open(platformio_ini_path, 'w') as f:
+        with open(platformio_ini_path, 'w' , encoding='utf-8') as f:
             f.write(platformio_ini_content)
             logging.info(f"\tCreated platformio.ini file at {short_path(platformio_ini_path)}")
 
@@ -928,7 +930,7 @@ def move_struct_union_and_enum_declarations():
                     logging.debug(f"\tProcessing file: {short_path(file_path)}")
 
                     try:
-                        with open(file_path, 'r') as file:
+                        with open(file_path, 'r', encoding='utf-8') as file:
                             content = file.read()
 
                         # Updated regular expression to match struct, union, and enum declarations, including 'typedef struct'
@@ -966,7 +968,7 @@ def move_struct_union_and_enum_declarations():
                                     struct_union_and_enum_added = True
 
                         # Write modified content back to the original file (File Under Test)
-                        with open(file_path, 'w') as file:
+                        with open(file_path, 'w', encoding='utf-8') as file:
                             file.write(modified_content)
 
                         # Insert declarations into arduinoGlue.h at the correct position
@@ -1040,7 +1042,7 @@ def extract_and_comment_defines():
                     if file.endswith(('.h', '.ino')):
                         file_path = os.path.join(root, file)
                         logging.debug(f"\tProcessing file: {short_path(file_path)}")
-                        with open(file_path, 'r') as f:
+                        with open(file_path, 'r' , encoding='utf-8') as f:
                             content = f.read()
 
                         new_content = []
@@ -1084,14 +1086,14 @@ def extract_and_comment_defines():
                             i += 1
 
                         # Write the modified content back to the file
-                        with open(file_path, 'w') as f:
+                        with open(file_path, 'w' , encoding='utf-8') as f:
                             f.write('\n'.join(new_content))
                         logging.debug(f"\tUpdated {file} with commented out #defines")
 
         # Create arduinoGlue.h with all macros
         all_defines_path = os.path.join(glob_pio_include, 'arduinoGlue.h')
         logging.info(f"\tCreating arduinoGlue.h with {len(all_defines)} macros")
-        with open(all_defines_path, 'w') as f:
+        with open(all_defines_path, 'w' , encoding='utf-8') as f:
             f.write("#ifndef ARDUINOGLUE_H\n#define ARDUINOGLUE_H\n\n")
             for macro_name, macro_value in all_defines:
                 f.write(f"{macro_value}\n")
@@ -1139,7 +1141,7 @@ def extract_and_comment_defines():
                     if file.endswith(('.h', '.ino')):
                         file_path = os.path.join(root, file)
                         logging.debug(f"\tProcessing file: {short_path(file_path)}")
-                        with open(file_path, 'r') as f:
+                        with open(file_path, 'r', encoding='utf-8') as f:
                             content = f.read()
 
                         new_content = []
@@ -1183,13 +1185,13 @@ def extract_and_comment_defines():
                             i += 1
 
                         # Write the modified content back to the file
-                        with open(file_path, 'w') as f:
+                        with open(file_path, 'w', encoding='utf-8') as f:
                             f.write('\n'.join(new_content))
                         logging.debug(f"\tUpdated {file} with commented out #defines")
 
         # Insert all defines into arduinoGlue.h after the all_defines_marker
         all_defines_path = os.path.join(glob_pio_include, 'arduinoGlue.h')
-        with open(all_defines_path, 'r') as f:
+        with open(all_defines_path, 'r', encoding='utf-8') as f:
             content = f.read()
 
         marker_index = content.find(all_defines_marker)
@@ -1198,7 +1200,7 @@ def extract_and_comment_defines():
                            '\n' + '\n'.join(all_defines) + 
                            content[marker_index + len(all_defines_marker):])
             
-            with open(all_defines_path, 'w') as f:
+            with open(all_defines_path, 'w' , encoding='utf-8') as f:
                 f.write(new_content)
 
         logging.info(f"\tInserted {len(all_defines)} #define statements into {short_path(all_defines_path)}")
@@ -1216,7 +1218,7 @@ def add_markers_to_header_file(file_path):
     logging.info(f"Processing: add_markers_to_header_file() from: {short_path(file_path)}")
 
     try:
-        with open(file_path, 'r') as file:
+        with open(file_path, 'r', encoding='utf-8') as file:
             content = file.read()
 
         markers = [
@@ -1268,7 +1270,7 @@ def add_markers_to_header_file(file_path):
         # Join lines back into content
         modified_content = '\n'.join(lines)
 
-        with open(file_path, 'w') as file:
+        with open(file_path, 'w', encoding='utf-8') as file:
             file.write(modified_content)
                     
     except Exception as e:
@@ -1295,7 +1297,7 @@ def create_new_header_file(ino_name, header_name):
 
         base_name = os.path.splitext(header_name)[0]
         header_path = os.path.join(glob_pio_include, f"{header_name}")
-        with open(header_path, 'w') as f:
+        with open(header_path, 'w' , encoding='utf-8') as f:
             f.write(f"#ifndef {base_name.upper()}_H\n")
             f.write(f"#define {base_name.upper()}_H\n\n")
             f.write(f"{all_includes_marker}")
@@ -1321,7 +1323,7 @@ def process_original_header_file(header_path, base_name):
     
     try:
         if os.path.exists(header_path):
-            with open(header_path, 'r') as f:
+            with open(header_path, 'r' , encoding='utf-8') as f:
                 original_content = f.read()
             
             # Check for existing header guards
@@ -1359,7 +1361,7 @@ def process_original_header_file(header_path, base_name):
 
             # Only write to the file if changes were made
             if new_content != original_content:
-                with open(header_path, 'w') as f:
+                with open(header_path, 'w' , encoding='utf-8') as f:
                     f.write(new_content)
                 logging.debug(f"\tUpdated original header file: {short_path(header_path)}")
             else:
@@ -1514,7 +1516,7 @@ def extract_all_includes_from_file(file_path):
     includes = []
 
     try:
-        with open(file_path, 'r') as file:
+        with open(file_path, 'r', encoding='utf-8') as file:
             lines = file.readlines()
 
         modified_lines = []
@@ -1534,7 +1536,7 @@ def extract_all_includes_from_file(file_path):
                 modified_lines.append(line)
 
         # Write the modified content back to the file
-        with open(file_path, 'w') as file:
+        with open(file_path, 'w', encoding='utf-8') as file:
             file.writelines(modified_lines)
 
         logging.info(f"Processed {os.path.basename(file_path)}")
@@ -1607,7 +1609,7 @@ def extract_global_variables(file_path):
         return False
 
     try:
-        with open(file_path, 'r') as f:
+        with open(file_path, 'r', encoding='utf-8') as f:
             content = f.read()
 
         lines = content.split('\n')
@@ -1780,7 +1782,7 @@ def extract_constant_pointers(file_path):
         
         file_vars = []
 
-        with open(file_path, 'r') as file:
+        with open(file_path, 'r', encoding='utf-8') as file:
             content = file.read()
 
         # Remove comments
@@ -1851,7 +1853,7 @@ def extract_undefined_vars_in_file(file_path):
     ])
 
     try:
-        with open(file_path, 'r') as file:
+        with open(file_path, 'r', encoding='utf-8') as file:
             content = file.read()
         
         # Remove comments
@@ -2016,7 +2018,7 @@ def extract_class_instances(file_path):
     function_pattern = r'^\s*(?:(?:void|int|float|double|char|bool|auto)\s+)?(\w+)\s*\([^)]*\)\s*{'
     
     try:
-        with open(file_path, 'r') as f:
+        with open(file_path, 'r' , encoding='utf-8') as f:
             content = f.read()
         
         lines = content.split('\n')
@@ -2099,7 +2101,7 @@ def update_arduinoglue_with_includes(dict_all_includes):
 
     try:
         glue_path = os.path.join(glob_pio_include, "arduinoGlue.h")
-        with open(glue_path, "r") as file:
+        with open(glue_path, "r" , encoding='utf-8') as file:
             content = file.read()
 
         insert_pos = find_marker_position(content, all_includes_marker)
@@ -2114,7 +2116,7 @@ def update_arduinoglue_with_includes(dict_all_includes):
 
         new_content += content[insert_pos:]
 
-        with open(glue_path, "w") as file:
+        with open(glue_path, "w" , encoding='utf-8') as file:
             file.write(new_content)
 
     except Exception as e:
@@ -2132,7 +2134,7 @@ def update_arduinoglue_with_global_variables(dict_global_variables):
 
     try:
         glue_path = os.path.join(glob_pio_include, "arduinoGlue.h")
-        with open(glue_path, "r") as file:
+        with open(glue_path, "r" , encoding='utf-8') as file:
             content = file.read()
 
         insert_pos = find_marker_position(content, extern_variables_marker)
@@ -2154,7 +2156,7 @@ def update_arduinoglue_with_global_variables(dict_global_variables):
 
         new_content += content[insert_pos:]
 
-        with open(glue_path, "w") as file:
+        with open(glue_path, "w" , encoding='utf-8') as file:
             file.write(new_content)
 
     except Exception as e:
@@ -2172,7 +2174,7 @@ def update_arduinoglue_with_prototypes(dict_prototypes):
 
     try:
         glue_path = os.path.join(glob_pio_include, "arduinoGlue.h")
-        with open(glue_path, "r") as file:
+        with open(glue_path, "r" , encoding='utf-8') as file:
             content = file.read()
 
         insert_pos = find_marker_position(content, prototypes_marker)
@@ -2195,7 +2197,7 @@ def update_arduinoglue_with_prototypes(dict_prototypes):
 
         new_content += content[insert_pos:]
 
-        with open(glue_path, "w") as file:
+        with open(glue_path, "w" , encoding='utf-8') as file:
             file.write(new_content)
 
     except Exception as e:
@@ -2211,7 +2213,7 @@ def remove_unused_markers_from_arduinoGlue():
     logging.info(f"GluePath: {glue_path}")
 
     try:
-        with open(glue_path, 'r') as file:
+        with open(glue_path, 'r', encoding='utf-8') as file:
             content = file.read()
 
         #debug#logging.info("File content:")
@@ -2257,7 +2259,7 @@ def remove_unused_markers_from_arduinoGlue():
             content += '\n#endif // ARDUINOGLUE_H\n'
 
         if content != original_content:
-            with open(glue_path, 'w') as file:
+            with open(glue_path, 'w', encoding='utf-8') as file:
                 file.write(content)
             logging.info("File updated 'arduinoGlue.h'successfully")
         else:
@@ -2285,7 +2287,7 @@ def insert_class_instances_to_header_files(file_name):
         
         # Check if the .h file exists, if not, create it
         if not os.path.exists(header_file):
-            with open(header_file, 'w') as f:
+            with open(header_file, 'w' , encoding='utf-8') as f:
                 file_name = os.path.splitext(header_base)[0]
                 f.write(f"#ifndef _{file_name.upper()}_H_\n")
                 f.write(f"#define _{file_name.upper()}_H_\n\n")
@@ -2294,7 +2296,7 @@ def insert_class_instances_to_header_files(file_name):
             logging.info(f"\tCreated header file: {short_path(header_file)}")
         
         # Read the content of the .h file
-        with open(header_file, 'r') as f:
+        with open(header_file, 'r' , encoding='utf-8') as f:
             header_content = f.read()
 
         # Get the class instances for this file
@@ -2359,7 +2361,7 @@ def insert_class_instances_to_header_files(file_name):
             logging.warning(f"\t\tCould not find marker {all_includes_marker} in {short_path(header_file)}")
 
         # Write the updated content back to the .h file
-        with open(header_file, 'w') as f:
+        with open(header_file, 'w' , encoding='utf-8') as f:
             f.write(updated_content)
 
     except Exception as e:
@@ -2446,7 +2448,7 @@ def find_undefined_functions_and_update_headers(glob_pio_src, glob_pio_include, 
             else:
                 short_header_path = header_path
 
-            with open(file_path, 'r') as f:
+            with open(file_path, 'r' , encoding='utf-8') as f:
                 content = f.read()
 
             # Find all function calls
@@ -2467,7 +2469,7 @@ def find_undefined_functions_and_update_headers(glob_pio_src, glob_pio_include, 
                     logging.info(f"\t>> {func} - {function_reference_array[func]}")
 
                 # Update the header file
-                with open(header_path, 'r') as f:
+                with open(header_path, 'r' , encoding='utf-8') as f:
                     header_content = f.read()
 
                 new_includes = []
@@ -2506,7 +2508,7 @@ def find_undefined_functions_and_update_headers(glob_pio_src, glob_pio_include, 
                     )
 
                     # Write the updated content back to the header file
-                    with open(header_path, 'w') as f:
+                    with open(header_path, 'w' , encoding='utf-8') as f:
                         f.write(updated_content)
 
                     logging.info(f"\tUpdated {short_header_path} with new includes:")
@@ -2531,7 +2533,7 @@ def process_function_references(glob_pio_src, glob_pio_include):
     # Collect all function prototypes from header files
     for file in os.listdir(glob_pio_include):
         if file.endswith('.h'):
-            with open(os.path.join(glob_pio_include, file), 'r') as f:
+            with open(os.path.join(glob_pio_include, file), 'r' , encoding='utf-8') as f:
                 content = f.read()
             prototypes = re.findall(r'^\w+[\s\*]+(\w+)\s*\([^)]*\);', content, re.MULTILINE)
             for func_name in prototypes:
@@ -2549,7 +2551,7 @@ def process_function_references(glob_pio_src, glob_pio_include):
             source_path = os.path.join(glob_pio_src, file)
             header_path = os.path.join(glob_pio_include, f"{base_name}.h")
 
-            with open(source_path, 'r') as f:
+            with open(source_path, 'r' , encoding='utf-8') as f:
                 content = f.read()
 
             # Find all function calls
@@ -2580,7 +2582,7 @@ def add_guards_and_marker_to_header(file_path):
     logging.info("")
     logging.info(f"Processing: add_guards_and_marker_to_header() file: [{os.path.basename(file_path)}]")
     
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='utf-8') as file:
         content = file.read()
     
     # Replace multiple empty lines with a single empty line
@@ -2624,7 +2626,7 @@ def add_guards_and_marker_to_header(file_path):
 
     modified_content = "\n".join(lines)
 
-    with open(file_path, 'w') as file:
+    with open(file_path, 'w', encoding='utf-8') as file:
         file.write(modified_content)
     
     logging.info(f"\tFile {os.path.basename(file_path)} has been successfully modified.")
@@ -2634,7 +2636,7 @@ def insert_header_include_in_cpp(file_path):
     logging.info("")
     logging.info(f"Processing: insert_header_include_in_cpp(): [{os.path.basename(file_path)}]")
     
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='utf-8') as file:
         content = file.read()
     
     lines = content.splitlines()
@@ -2676,7 +2678,7 @@ def insert_header_include_in_cpp(file_path):
     
     modified_content = "\n".join(lines)
     
-    with open(file_path, 'w') as file:
+    with open(file_path, 'w', encoding='utf-8') as file:
         file.write(modified_content)
     
     logging.info(f"\tInserted '{include_statement}' at line {insert_index + 1}")
@@ -2692,7 +2694,7 @@ def preserve_original_headers():
     for file in os.listdir(glob_pio_include):
         if file.endswith('.h'):
             header_path = os.path.join(glob_pio_include, file)
-            with open(header_path, 'r') as f:
+            with open(header_path, 'r' , encoding='utf-8') as f:
                 original_headers[file] = f.read()
 
     return original_headers
@@ -2734,7 +2736,7 @@ def update_project_header(glob_pio_include, glob_project_name, original_content)
             new_content.append(section)
 
     # Write the updated content back to the file
-    with open(project_header_path, 'w') as f:
+    with open(project_header_path, 'w' , encoding='utf-8') as f:
         f.writelines(new_content)
 
     logging.info(f"\tUpdated project header {glob_project_name}.h while preserving original content")
