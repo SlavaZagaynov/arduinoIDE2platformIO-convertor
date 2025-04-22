@@ -1,3 +1,5 @@
++ utf-8 для русских букв
+
 # How to convert a ArduinoIDE project to PlatformIO
 
 1) You have to clone the repo to your computer.
